@@ -1,0 +1,256 @@
+﻿@model UserRoles.ViewModels.AddProfessorViewModel
+@{
+    ViewData["Title"] = "Add New Professor";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    :root {
+        --primary: #6366f1;
+        --success: #10b981;
+    }
+
+    body {
+        background: #f8fafc;
+    }
+
+    .form-container {
+        max-width: 700px;
+        margin: 50px auto;
+        padding: 0 20px;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+        .form-header h1 {
+            font-size: 2em;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: #64748b;
+            font-size: 1.05em;
+        }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1em;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .text-danger {
+        color: #ef4444;
+        font-size: 0.85em;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .btn {
+        padding: 14px 28px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1.05em;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: white;
+        width: 100%;
+        justify-content: center;
+    }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+    .btn-secondary {
+        background: #64748b;
+        color: white;
+        width: 100%;
+        justify-content: center;
+    }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+    .form-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .info-box {
+        background: #eff6ff;
+        border-left: 4px solid var(--primary);
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+    }
+
+        .info-box p {
+            margin: 0;
+            color: #1e40af;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+    @@media (max-width: 768px) {
+        .form-row
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        grid-template-columns: 1fr;
+    }
+
+    }
+</style>
+
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-header">
+            <h1><i class="fas fa-user-plus"></i> Add New Professor</h1>
+            <p>Create a new professor account with login credentials</p>
+        </div>
+
+        <div class="info-box">
+            <p>
+                <i class="fas fa-info-circle"></i>
+                <strong>Important:</strong> The professor will be able to log in using their email address and the password you set here.
+            </p>
+        </div>
+
+        <form asp-action="AddProfessor" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-bottom: 20px;"></div>
+
+            <div class="form-group">
+                <label asp-for="FullName">
+                    <i class="fas fa-user"></i> Full Name *
+                </label>
+                <input asp-for="FullName" class="form-control" placeholder="Enter professor's full name" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email">
+                    <i class="fas fa-envelope"></i> Email Address *
+                </label>
+                <input asp-for="Email" class="form-control" type="email" placeholder="professor@example.com" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Password">
+                        <i class="fas fa-lock"></i> Password *
+                    </label>
+                    <input asp-for="Password" class="form-control" type="password" placeholder="Enter password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword">
+                        <i class="fas fa-lock"></i> Confirm Password *
+                    </label>
+                    <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Confirm password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="GradeLevel">
+                        <i class="fas fa-graduation-cap"></i> Assigned Grade Level *
+                    </label>
+                    <select asp-for="GradeLevel" class="form-control">
+                        <option value="">-- Select Grade Level --</option>
+                        <option value="1">Grade 1</option>
+                        <option value="2">Grade 2</option>
+                        <option value="3">Grade 3</option>
+                        <option value="4">Grade 4</option>
+                        <option value="5">Grade 5</option>
+                        <option value="6">Grade 6</option>
+                    </select>
+                    <span asp-validation-for="GradeLevel" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Section">
+                        <i class="fas fa-door-open"></i> Assigned Section (Optional)
+                    </label>
+                    <input asp-for="Section" class="form-control" type="number" min="1" placeholder="Enter section number" />
+                    <span asp-validation-for="Section" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="@Url.Action("ManageProfessors", "Admin")" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> Create Professor Account
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

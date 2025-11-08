@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "User Dashboard";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="alert alert-success">
+    <strong>Welcome User:</strong> This is your personal dashboard.
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Your Profile</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>Name:</strong> @User.Identity.Name</p>
+                <p><strong>Role:</strong> User</p>
+                <p><strong>Status:</strong> Active</p>
+
+                <!-- Change Password Button -->
+                <div class="mt-3">
+                    <a href="@Url.Action("ChangePassword", "Account")" class="btn btn-warning">
+                        Change Password
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        margin-bottom: 1rem;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        font-weight: 600;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #000;
+        font-weight: bold;
+    }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+            color: #000;
+        }
+</style>

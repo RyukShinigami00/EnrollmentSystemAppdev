@@ -1,0 +1,86 @@
+﻿@model UserRoles.Models.Enrollment
+
+@{
+    ViewData["Title"] = "My Enrollment Details";
+}
+
+<div class="details-container" style="max-width: 700px; margin: 50px auto; padding: 30px; background: #fff; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1);">
+    <h2 style="text-align: center; margin-bottom: 30px;">My Enrollment Details</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="detail-row" style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee;">
+        <div style="font-weight: bold; width: 200px; color: #555;">Student Name:</div>
+        <div style="flex: 1; color: #333;">@Model.StudentName</div>
+    </div>
+
+    <div class="detail-row" style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee;">
+        <div style="font-weight: bold; width: 200px; color: #555;">Grade Level:</div>
+        <div style="flex: 1; color: #333;">Grade @Model.GradeLevel</div>
+    </div>
+
+    <div class="detail-row" style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee;">
+        <div style="font-weight: bold; width: 200px; color: #555;">Section:</div>
+        <div style="flex: 1; color: #333;">Section @Model.Section</div>
+    </div>
+
+    <div class="detail-row" style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee;">
+        <div style="font-weight: bold; width: 200px; color: #555;">Parent/Guardian:</div>
+        <div style="flex: 1; color: #333;">@Model.ParentName</div>
+    </div>
+
+    <div class="detail-row" style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee;">
+        <div style="font-weight: bold; width: 200px; color: #555;">Contact Number:</div>
+        <div style="flex: 1; color: #333;">@Model.ContactNumber</div>
+    </div>
+
+    <div class="detail-row" style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee;">
+        <div style="font-weight: bold; width: 200px; color: #555;">Address:</div>
+        <div style="flex: 1; color: #333;">@Model.Address</div>
+    </div>
+
+    <div class="detail-row" style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee;">
+        <div style="font-weight: bold; width: 200px; color: #555;">Enrollment Date:</div>
+        <div style="flex: 1; color: #333;">@Model.EnrollmentDate.ToString("MMMM dd, yyyy")</div>
+    </div>
+
+    <div class="detail-row" style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee;">
+        <div style="font-weight: bold; width: 200px; color: #555;">Status:</div>
+        <div style="flex: 1;">
+            @if (Model.Status == "pending")
+            {
+                <span class="badge bg-warning text-dark">PENDING</span>
+            }
+            else if (Model.Status == "approved")
+            {
+                <span class="badge bg-success">APPROVED</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">REJECTED</span>
+            }
+        </div>
+    </div>
+
+    <div class="detail-row" style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee;">
+        <div style="font-weight: bold; width: 200px; color: #555;">Birth Certificate:</div>
+        <div style="flex: 1;">
+            <a href="@Model.BirthCertificate" target="_blank" class="btn btn-sm btn-outline-primary">View Document</a>
+        </div>
+    </div>
+
+    <div class="detail-row" style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee;">
+        <div style="font-weight: bold; width: 200px; color: #555;">Form 137:</div>
+        <div style="flex: 1;">
+            <a href="@Model.Form137" target="_blank" class="btn btn-sm btn-outline-primary">View Document</a>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <a asp-action="PrintEnrollment" class="btn btn-primary" target="_blank">Print Details</a>
+        <a asp-action="Logout" asp-controller="Account" class="btn btn-secondary">Logout</a>
+    </div>
+</div>
