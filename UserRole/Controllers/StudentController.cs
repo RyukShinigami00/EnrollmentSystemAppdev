@@ -193,5 +193,25 @@ namespace UserRoles.Controllers
 
             return capacity.CurrentSection;
         }
+
+        public async Task<IActionResult> EnrollmentProgress()
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var enrollment = await _context.Enrollments
+                .Include(e => e.User)
+                .FirstOrDefaultAsync(e => e.UserId == userId);
+
+            if (enrollment == null)
+            {
+                return RedirectToAction("EnrollmentForm");
+            }
+
+            return View(enrollment);
+        }
     }
 }

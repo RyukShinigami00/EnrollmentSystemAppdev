@@ -263,17 +263,15 @@
                 @if (ViewBag.AvailableSections != null && ((List<int>)ViewBag.AvailableSections).Any())
                 {
                     <div class="section-grid">
-                        @foreach (var section in (List<int>)ViewBag.AvailableSections)
+                        @foreach (var sectionNum in (List<int>)ViewBag.AvailableSections)
                         {
-                            var studentsInSection = 0; // You can pass this from controller if needed
-                            <div class="section-option">
-                                <input type="radio" name="newSection" id="section_@@section" value="@@section" required />
-                                <label for="section_@@section">
-                                    <div class="section-number">@@section</div>
-                                    <div class="section-capacity">Section @@section</div>
+                            <input type="radio" name="newSection" id="section_@sectionNum" value="@sectionNum" required />
+                            <label for="section_@sectionNum">
+                                <div class="section-number">@sectionNum</div>
+                                    <div class="section-capacity">Section @sectionNum</div>
                                     <div class="section-capacity">Available</div>
                                 </label>
-                            </div>
+                            
                         }
                     </div>
                 }

@@ -546,15 +546,20 @@ namespace UserRoles.Controllers
                 return RedirectToAction(nameof(ViewStudents));
             }
 
-            // Get section capacity for this grade
+            // Get section capacity for this grade with actual student counts
             var gradeLevel = enrollment.GradeLevel;
             var sectionsWithCapacity = new List<int>();
+            var sectionCapacityData = new Dictionary<int, int>(); // section number -> student count
 
             // Check all 8 sections
             for (int i = 1; i <= 8; i++)
             {
                 var studentsInSection = await _context.Enrollments
-                    .CountAsync(e => e.GradeLevel == gradeLevel && e.Section == i && e.Status == "approved");
+                    .CountAsync(e => e.GradeLevel == gradeLevel &&
+                                   e.Section == i &&
+                                   e.Status == "approved");
+
+                sectionCapacityData[i] = studentsInSection;
 
                 if (studentsInSection < 40) // Max 40 students per section
                 {
@@ -563,6 +568,7 @@ namespace UserRoles.Controllers
             }
 
             ViewBag.AvailableSections = sectionsWithCapacity;
+            ViewBag.SectionCapacity = sectionCapacityData; // Pass capacity data to view
             ViewBag.GradeLevel = gradeLevel;
 
             return View(enrollment);
