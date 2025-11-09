@@ -546,12 +546,12 @@ namespace UserRoles.Controllers
                 return RedirectToAction(nameof(ViewStudents));
             }
 
-            // Get section capacity for this grade with actual student counts
+            
             var gradeLevel = enrollment.GradeLevel;
             var sectionsWithCapacity = new List<int>();
-            var sectionCapacityData = new Dictionary<int, int>(); // section number -> student count
+            var sectionCapacityData = new Dictionary<int, int>(); 
 
-            // Check all 8 sections
+            
             for (int i = 1; i <= 8; i++)
             {
                 var studentsInSection = await _context.Enrollments
@@ -561,20 +561,19 @@ namespace UserRoles.Controllers
 
                 sectionCapacityData[i] = studentsInSection;
 
-                if (studentsInSection < 40) // Max 40 students per section
+                if (studentsInSection < 40) 
                 {
                     sectionsWithCapacity.Add(i);
                 }
             }
 
             ViewBag.AvailableSections = sectionsWithCapacity;
-            ViewBag.SectionCapacity = sectionCapacityData; // Pass capacity data to view
+            ViewBag.SectionCapacity = sectionCapacityData; 
             ViewBag.GradeLevel = gradeLevel;
 
             return View(enrollment);
         }
 
-        // Reassign Student to Section - POST
         [HttpPost]
         public async Task<IActionResult> ReassignStudent(int id, int newSection)
         {
@@ -585,7 +584,7 @@ namespace UserRoles.Controllers
                 return RedirectToAction(nameof(ViewStudents));
             }
 
-            // Check if section has capacity
+            
             var studentsInSection = await _context.Enrollments
                 .CountAsync(e => e.GradeLevel == enrollment.GradeLevel &&
                                e.Section == newSection &&
@@ -599,8 +598,7 @@ namespace UserRoles.Controllers
 
             var oldSection = enrollment.Section;
             enrollment.Section = newSection;
-            enrollment.Status = "approved"; // Set back to approved
-
+            enrollment.Status = "approved";
             await _context.SaveChangesAsync();
 
             TempData["Success"] = $"Student {enrollment.StudentName} has been reassigned from Section {oldSection} to Section {newSection}.";
