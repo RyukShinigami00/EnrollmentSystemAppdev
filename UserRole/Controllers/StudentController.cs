@@ -23,16 +23,14 @@ namespace UserRoles.Controllers
         // GET: Student/EnrollmentForm
         public async Task<IActionResult> EnrollmentForm()
         {
-            // Check if user is logged in
             var userId = HttpContext.Session.GetString("UserId");
             if (string.IsNullOrEmpty(userId))
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            // Check if already enrolled
-            var existingEnrollment = await _context.Enrollments
-                .FirstOrDefaultAsync(e => e.UserId == userId);
+            var existingEnrollment = await _context.Enrollments.FirstOrDefaultAsync(e => e.UserId == userId);
+            ViewBag.HasEnrollment = (existingEnrollment != null);
 
             if (existingEnrollment != null)
             {
@@ -104,8 +102,8 @@ namespace UserRoles.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var enrollment = await _context.Enrollments
-                .FirstOrDefaultAsync(e => e.UserId == userId);
+            var enrollment = await _context.Enrollments.FirstOrDefaultAsync(e => e.UserId == userId);
+            ViewBag.HasEnrollment = (enrollment != null);
 
             if (enrollment == null)
             {
@@ -114,6 +112,7 @@ namespace UserRoles.Controllers
 
             return View(enrollment);
         }
+
 
         // GET: Student/PrintEnrollment
         public async Task<IActionResult> PrintEnrollment()
@@ -124,8 +123,8 @@ namespace UserRoles.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var enrollment = await _context.Enrollments
-                .FirstOrDefaultAsync(e => e.UserId == userId);
+            var enrollment = await _context.Enrollments.FirstOrDefaultAsync(e => e.UserId == userId);
+            ViewBag.HasEnrollment = (enrollment != null);
 
             if (enrollment == null)
             {
@@ -202,9 +201,8 @@ namespace UserRoles.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var enrollment = await _context.Enrollments
-                .Include(e => e.User)
-                .FirstOrDefaultAsync(e => e.UserId == userId);
+            var enrollment = await _context.Enrollments.Include(e => e.User).FirstOrDefaultAsync(e => e.UserId == userId);
+            ViewBag.HasEnrollment = (enrollment != null);
 
             if (enrollment == null)
             {
@@ -212,6 +210,10 @@ namespace UserRoles.Controllers
             }
 
             return View(enrollment);
+        }
+        public IActionResult AboutUs()
+        {
+            return View();
         }
     }
 }

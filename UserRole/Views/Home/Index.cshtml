@@ -4,18 +4,34 @@
 
 <link rel="stylesheet" href="~/css/professional-style.css" />
 
-<div class="hero-banner" style="background-image: url('/images/school-building.jpg');">
-    <div class="hero-content animate-fade-in">
-        <h1>Start Your Application at<br />Elementary School Enrollment System</h1>
-        <p>Experience quality education! Explore our programs and enroll online through our admissions portal.</p>
+<div class="hero-banner" style="padding:60px 0; background: url('/images/school-building.jpg') center/cover no-repeat; position: relative;">
 
-        @if (!User.Identity.IsAuthenticated)
-        {
-            <div style="margin-top: 40px;">
-                <a href="@Url.Action("Login", "Account")" class="btn-modern btn-primary-red">LOGIN</a>
-                <a href="@Url.Action("Register", "Account")" class="btn-modern btn-white">REGISTER NOW</a>
-            </div>
-        }
+    <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.35);"></div>
+
+    <div style="position: relative; z-index:2; background: rgba(255,255,255,0.05); padding:40px; border-radius:16px; max-width:800px; margin:auto; text-align: center;">
+        <h1 style="color:#fff; font-size:3em; margin-bottom:0.3em; text-shadow: 2px 2px 6px rgba(0,0,0,0.6);">
+            Fort Bonifacio Elementary School
+        </h1>
+        <p style="color:#fff; font-size:1.3em; text-shadow: 1px 1px 4px rgba(0,0,0,0.6);">
+            Nurturing Excellence and Character — One Learner at a Time
+        </p>
+
+        <div style="margin-top: 40px;">
+            <h2 style="color:#fff; font-size:1.8em; margin-bottom:20px; text-shadow: 1px 1px 4px rgba(0,0,0,0.6);">
+                Start Your Application at<br />Elementary School Enrollment System
+            </h2>
+            <p style="color:#fff; font-size:1.15em; text-shadow: 1px 1px 4px rgba(0,0,0,0.6);">
+                Experience quality education! Explore our programs and enroll online through our admissions portal.
+            </p>
+
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <div style="margin-top: 30px;">
+                    <a href="@Url.Action("Login", "Account")" class="btn-modern btn-primary-red" style="margin-right: 10px;">LOGIN</a>
+                    <a href="@Url.Action("Register", "Account")" class="btn-modern btn-white">REGISTER NOW</a>
+                </div>
+            }
+        </div>
     </div>
 </div>
 
@@ -28,25 +44,30 @@
 
             @{
                 var role = Context.Session.GetString("Role");
+                bool hasEnrollment = ViewBag.HasEnrollment ?? false;
             }
 
             @if (role == "student")
             {
                 <div class="card-container">
-                    <div class="card-professional">
-                        <span class="card-icon">📝</span>
-                        <h3>Start Enrollment</h3>
-                        <p>Begin your enrollment process by filling out the application form and uploading required documents.</p>
-                        <a href="@Url.Action("EnrollmentForm", "Student")" class="btn-modern btn-success">ENROLL NOW</a>
-                    </div>
-
-                    <div class="card-professional">
-                        <span class="card-icon">📄</span>
-                        <h3>View Enrollment</h3>
-                        <p>Check your enrollment status, view submitted documents, and print your enrollment details.</p>
-                        <a href="@Url.Action("ViewEnrollment", "Student")" class="btn-modern btn-info">VIEW DETAILS</a>
-                    </div>
-
+                    @if (!hasEnrollment)
+                    {
+                        <div class="card-professional">
+                            <span class="card-icon">📝</span>
+                            <h3>Start Enrollment</h3>.
+                            <p>Begin your enrollment process by filling out the application form and uploading required documents.</p>
+                            <a href="@Url.Action("EnrollmentForm", "Student")" class="btn-modern btn-success">ENROLL NOW</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card-professional">
+                            <span class="card-icon">📄</span>
+                            <h3>View Enrollment</h3>
+                            <p>Check your enrollment status, view submitted documents, and print your enrollment details.</p>
+                            <a href="@Url.Action("ViewEnrollment", "Student")" class="btn-modern btn-info">VIEW DETAILS</a>
+                        </div>
+                    }
                     <div class="card-professional">
                         <span class="card-icon">📚</span>
                         <h3>Requirements</h3>
