@@ -262,23 +262,23 @@
                                 if (!hasEnrollment)
                                 {
                                     <li class="nav-item">
-                                        <a class="nav-link text-white" asp-controller="Student" asp-action="EnrollmentForm">📝 Enroll</a>
+                                        <a class="nav-link text-white" asp-controller="Student" asp-action="EnrollmentForm"> Enroll</a>
                                     </li>
                                 }
                                 else
                                 {
                                     <li class="nav-item">
-                                        <a class="nav-link text-white" asp-controller="Student" asp-action="ViewEnrollment">📄 My Enrollment</a>
+                                        <a class="nav-link text-white" asp-controller="Student" asp-action="ViewEnrollment"> My Enrollment</a>
                                     </li>
                                 }
                             }
                             else if (role == "admin")
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" asp-controller="Admin" asp-action="Dashboard">🎛️ Dashboard</a>
+                                    <a class="nav-link text-white" asp-controller="Admin" asp-action="Dashboard"> Dashboard</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" asp-controller="Admin" asp-action="ViewStudents">👥 Students</a>
+                                    <a class="nav-link text-white" asp-controller="Admin" asp-action="ViewStudents"> Students</a>
                                 </li>
                             }
                         }
