@@ -47,23 +47,237 @@
 </div>
 
 <!-- Our Campus Section -->
-<div style="max-width: 1000px; margin: 40px auto;">
-    <h2 style="text-align:center; margin:30px 0 16px 0;">Our Campus</h2>
-    <div style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: center;">
-        <img src="~/images/school-building.jpg" alt="School Building" style="width:320px; border-radius:12px; box-shadow:0 4px 18px rgba(0,0,0,0.13);" />
-        <img src="~/images/FBES1.jpg" alt="School Event" style="width:320px; border-radius:12px; box-shadow: 0 4px 18px rgba(0,0,0,0.13);" />
-        <img src="~/images/eQuake.jpg" alt="Classroom" style="width:320px; border-radius:12px; box-shadow: 0 4px 18px rgba(0,0,0,0.13);" />
-        <img src="~/images/ClassRoom.jpg" alt="Classroom" style="width:320px; border-radius:12px; box-shadow: 0 4px 18px rgba(0,0,0,0.13);" />
-    </div>
-    <p style="margin-top: 30px; text-align: center; font-size: 1.13em;">
+<div class="about-section">
+    <h2 style="color: var(--dark-blue); font-size: 2em; margin-bottom: 20px; text-align: center;">Our Campus</h2>
+    <p style="font-size: 1.1em; line-height: 1.8; color: #475569; margin-bottom: 30px; text-align: center;">
         Our campus features spacious, modern classrooms, landscaped open spaces, and vibrant events that build confidence and character in every child.
     </p>
-    <h2 style="text-align:center; margin:40px 0 18px 0;">Why Choose Us?</h2>
-    <ul style="margin: 0 auto; max-width: 700px; font-size: 1.17em; list-style: disc;">
-        <li>Dedicated, experienced teachers</li>
-        <li>Inclusive, supportive community</li>
-        <li>Focus on academics, values, and extra-curricular activities</li>
-        <li>Active parent involvement</li>
-    </ul>
+
+  
+    <div class="slideshow-container">
+     
+        <div class="campus-slide fade">
+            <img src="~/images/school-building.jpg" alt="School Building" style="width: 100%; border-radius: 12px;">
+            <div class="slide-caption">School Building</div>
+        </div>
+
+        <div class="campus-slide fade">
+            <img src="~/images/FBES1.jpg" alt="School Front" style="width: 100%; border-radius: 12px;">
+            <div class="slide-caption">School Front</div>
+        </div>
+
+        <div class="campus-slide fade">
+            <img src="~/images/eQuake.jpg" alt="Safety Drill" style="width: 100%; border-radius: 12px;">
+            <div class="slide-caption">Safety Drills & Activities</div>
+        </div>
+
+        <div class="campus-slide fade">
+            <img src="~/images/ClassRoom.jpg" alt="Classroom" style="width: 100%; border-radius: 12px;">
+            <div class="slide-caption">Modern Classrooms</div>
+        </div>
+
+      
+        <a class="slide-prev" onclick="changeSlide(-1)">❮</a>
+        <a class="slide-next" onclick="changeSlide(1)">❯</a>
+    </div>
+
+
+    <div style="text-align: center; margin-top: 20px;">
+        <span class="slide-dot" onclick="currentSlide(1)"></span>
+        <span class="slide-dot" onclick="currentSlide(2)"></span>
+        <span class="slide-dot" onclick="currentSlide(3)"></span>
+        <span class="slide-dot" onclick="currentSlide(4)"></span>
+    </div>
 </div>
-cdn.jsdelivr.net
+
+<style>
+   
+    .slideshow-container {
+        max-width: 900px;
+        position: relative;
+        margin: 0 auto;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+   
+    .campus-slide {
+        display: none;
+        position: relative;
+    }
+
+        .campus-slide img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block; 
+        }
+
+
+    .slide-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        color: white;
+        font-size: 1.5em;
+        font-weight: 700;
+        padding: 30px 20px 15px;
+        text-align: center;
+    }
+
+    .slide-prev, .slide-next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        margin-top: -30px;
+        padding: 16px 20px;
+        color: white;
+        font-weight: bold;
+        font-size: 2em;
+        transition: 0.3s ease;
+        border-radius: 0 8px 8px 0;
+        user-select: none;
+        background: rgba(0,0,0,0.4);
+        text-decoration: none;
+        z-index: 10; 
+    }
+
+    .slide-next {
+        right: 0;
+        border-radius: 8px 0 0 8px;
+    }
+
+        .slide-prev:hover, .slide-next:hover {
+            background: rgba(0,0,0,0.8);
+        }
+
+
+    .slide-dot {
+        cursor: pointer;
+        height: 15px;
+        width: 15px;
+        margin: 0 5px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+        .slide-dot:hover,
+        .slide-dot.active {
+            background-color: var(--primary-red);
+        }
+
+    .fade {
+        animation-name: smoothFade;
+        animation-duration: 7s;
+    }
+
+    @@keyframes smoothFade {
+        from
+
+    {
+        opacity: 0;
+        transform: scale(1.02);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    }
+
+
+    @@media (max-width: 768px) {
+        .campus-slide img
+
+    {
+        height: 350px;
+    }
+
+    .slide-caption {
+        font-size: 1.2em;
+        padding: 20px 15px 10px;
+    }
+
+    .slide-prev, .slide-next {
+        font-size: 1.5em;
+        padding: 12px 16px;
+    }
+
+    }
+</style>
+
+<script>
+    let slideIndex = 1;
+    let slideTimer;
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        showSlides(slideIndex);
+        startAutoSlide();
+    });
+
+
+    function changeSlide(n) {
+        clearTimeout(slideTimer);
+        showSlides(slideIndex += n);
+        startAutoSlide();
+    }
+
+    function currentSlide(n) {
+        clearTimeout(slideTimer);
+        showSlides(slideIndex = n);
+        startAutoSlide();
+    }
+
+    function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("campus-slide");
+        let dots = document.getElementsByClassName("slide-dot");
+
+        if (n > slides.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = slides.length }
+
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+
+
+        if (slides.length > 0) {
+            slides[slideIndex - 1].style.display = "block";
+            if (dots.length > 0) {
+                dots[slideIndex - 1].className += " active";
+            }
+        }
+    }
+
+    function startAutoSlide() {
+        slideTimer = setTimeout(function() {
+            slideIndex++;
+            showSlides(slideIndex);
+            startAutoSlide();
+        }, 5000);
+    }
+
+    let slideshowContainer = document.querySelector('.slideshow-container');
+    if (slideshowContainer) {
+        slideshowContainer.addEventListener('mouseenter', function() {
+            clearTimeout(slideTimer);
+        });
+
+        slideshowContainer.addEventListener('mouseleave', function() {
+            startAutoSlide();
+        });
+    }
+</script>
