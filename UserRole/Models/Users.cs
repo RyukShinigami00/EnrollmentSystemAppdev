@@ -16,6 +16,9 @@ namespace UserRoles.Models
 
         public int? AssignedSection { get; set; }
 
+        [StringLength(50)]
+        public string? AssignedRoom { get; set; }
+
         // Security properties
         public string? PasswordHistory { get; set; }
         public int FailedLoginAttempts { get; set; } = 0;

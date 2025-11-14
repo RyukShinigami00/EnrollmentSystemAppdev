@@ -221,6 +221,10 @@
     <div class="welcome-header">
         <h1>Welcome, @Model.ProfessorName!</h1>
         <p>Grade @Model.GradeLevel - Section @Model.Section | @Model.ClassSchedule.Shift Shift</p>
+        <!-- NEW: Display Room -->
+        <p style="font-size: 1.1em; margin-top: 10px;">
+            <i class="fas fa-door-open"></i> @Model.AssignedRoom
+        </p>
     </div>
 
     <div class="stats-grid">
@@ -236,16 +240,19 @@
             <div class="label">Assigned Section</div>
         </div>
 
+        <!-- NEW: Room Card -->
         <div class="stat-card" style="border-left-color: var(--warning);">
-            <h3>Total Students</h3>
-            <div class="value">@Model.TotalStudents</div>
-            <div class="label">Enrolled Students</div>
+            <h3>My Classroom</h3>
+            <div class="value" style="font-size: 1.5em;">
+                <i class="fas fa-door-open"></i>
+            </div>
+            <div class="label">@Model.AssignedRoom</div>
         </div>
 
         <div class="stat-card" style="border-left-color: var(--primary);">
-            <h3>Class Hours</h3>
-            <div class="value">5</div>
-            <div class="label">Hours per Day</div>
+            <h3>Total Students</h3>
+            <div class="value">@Model.TotalStudents</div>
+            <div class="label">Enrolled Students</div>
         </div>
     </div>
 

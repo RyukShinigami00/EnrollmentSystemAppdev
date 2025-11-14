@@ -40,7 +40,6 @@ namespace UserRoles.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // Get professor's assigned grade and section
             var gradeLevel = user.AssignedGradeLevel;
             var section = user.AssignedSection;
 
@@ -50,7 +49,6 @@ namespace UserRoles.Controllers
                 return View(new ProfessorDashboardViewModel());
             }
 
-            // Get students in professor's section
             var students = await _context.Enrollments
                 .Include(e => e.User)
                 .Where(e => e.GradeLevel == gradeLevel &&
@@ -59,7 +57,6 @@ namespace UserRoles.Controllers
                 .OrderBy(e => e.StudentName)
                 .ToListAsync();
 
-            // Determine class schedule based on grade level
             var schedule = GetClassSchedule(gradeLevel);
 
             var viewModel = new ProfessorDashboardViewModel
@@ -67,6 +64,7 @@ namespace UserRoles.Controllers
                 ProfessorName = user.FullName,
                 GradeLevel = gradeLevel,
                 Section = section ?? 0,
+                AssignedRoom = user.AssignedRoom ?? "No room assigned", // NEW
                 Students = students,
                 ClassSchedule = schedule,
                 TotalStudents = students.Count

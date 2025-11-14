@@ -211,6 +211,59 @@
     </div>
 </div>
 
+<script>
+    const currentProfessorId = '@Model.Id';
+    const gradeSelect = document.getElementById('gradeSelect');
+    const sectionSelect = document.getElementById('sectionSelect');
+
+    gradeSelect.addEventListener('change', async function() {
+        const gradeLevel = this.value;
+
+        if (!gradeLevel) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/Admin/GetAvailableSections?gradeLevel=${gradeLevel}`);
+            const data = await response.json();
+
+            const currentSection = '@Model.Section';
+            sectionSelect.innerHTML = '<option value="">-- Select Section --</option>';
+
+            for (let i = 1; i <= 8; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+
+                const takenSection = data.takenSections.find(s => s.section === i);
+
+                // Allow current professor's section
+                if (takenSection && i.toString() !== currentSection) {
+                    option.text = `Section ${i} - Taken (${takenSection.professorName})`;
+                    option.disabled = true;
+                    option.className = 'option-disabled';
+                } else {
+                    option.text = `Section ${i}${i.toString() === currentSection ? ' - Current' : ' - Available'}`;
+                }
+
+                // Pre-select current section
+                if (i.toString() === currentSection) {
+                    option.selected = true;
+                }
+
+                sectionSelect.appendChild(option);
+            }
+
+        } catch (error) {
+            console.error('Error fetching sections:', error);
+        }
+    });
+
+    // Trigger on page load if grade is already selected
+    if (gradeSelect.value) {
+        gradeSelect.dispatchEvent(new Event('change'));
+    }
+</script>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

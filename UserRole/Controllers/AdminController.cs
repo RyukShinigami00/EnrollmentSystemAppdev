@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using UserRole.Services;
 using UserRoles.Data;
+using UserRoles.Helpers;
 using UserRoles.Models;
 using UserRoles.ViewModels;
-using UserRole.Services;
 
 namespace UserRoles.Controllers
 {
@@ -255,6 +256,27 @@ namespace UserRoles.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Check if section already has an assigned professor
+                if (model.Section.HasValue)
+                {
+                    var existingProfessor = await _context.Users
+                        .FirstOrDefaultAsync(u => u.Role == "professor" &&
+                                                 u.AssignedGradeLevel == model.GradeLevel &&
+                                                 u.AssignedSection == model.Section);
+
+                    if (existingProfessor != null)
+                    {
+                        ModelState.AddModelError("Section",
+                            $"Grade {model.GradeLevel} - Section {model.Section} already has an assigned professor: {existingProfessor.FullName}");
+                        return View(model);
+                    }
+                }
+
+                // Get room assignment
+                string assignedRoom = model.Section.HasValue
+                    ? RoomAssignmentHelper.GetRoomForSection(model.GradeLevel, model.Section.Value)
+                    : null;
+
                 var user = new Users
                 {
                     FullName = model.FullName,
@@ -263,14 +285,15 @@ namespace UserRoles.Controllers
                     EmailConfirmed = true,
                     Role = "professor",
                     AssignedGradeLevel = model.GradeLevel,
-                    AssignedSection = model.Section
+                    AssignedSection = model.Section,
+                    AssignedRoom = assignedRoom // NEW: Assign room
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    TempData["Success"] = $"Professor {model.FullName} has been added successfully.";
+                    TempData["Success"] = $"Professor {model.FullName} has been added successfully and assigned to {assignedRoom}.";
                     return RedirectToAction(nameof(ManageProfessors));
                 }
 
@@ -323,11 +346,34 @@ namespace UserRoles.Controllers
                     return NotFound();
                 }
 
+                // Check if the new section assignment conflicts with existing professors
+                if (model.Section.HasValue)
+                {
+                    var existingProfessor = await _context.Users
+                        .FirstOrDefaultAsync(u => u.Role == "professor" &&
+                                                 u.AssignedGradeLevel == model.GradeLevel &&
+                                                 u.AssignedSection == model.Section &&
+                                                 u.Id != model.Id);
+
+                    if (existingProfessor != null)
+                    {
+                        ModelState.AddModelError("Section",
+                            $"Grade {model.GradeLevel} - Section {model.Section} already has an assigned professor: {existingProfessor.FullName}");
+                        return View(model);
+                    }
+                }
+
+                // Update room assignment
+                string assignedRoom = model.Section.HasValue
+                    ? RoomAssignmentHelper.GetRoomForSection(model.GradeLevel, model.Section.Value)
+                    : null;
+
                 professor.FullName = model.FullName;
                 professor.Email = model.Email;
                 professor.UserName = model.Email;
                 professor.AssignedGradeLevel = model.GradeLevel;
                 professor.AssignedSection = model.Section;
+                professor.AssignedRoom = assignedRoom; // NEW: Update room
 
                 var result = await _userManager.UpdateAsync(professor);
 
@@ -513,7 +559,7 @@ namespace UserRoles.Controllers
             // Remove student from section (set section to null)
             // Student remains enrolled but needs to be reassigned to a section
             enrollment.Section = null;
-            enrollment.Status = "pending"; // Set back to pending for reassignment
+            enrollment.Status = "pending";
 
             await _context.SaveChangesAsync();
 
@@ -546,12 +592,12 @@ namespace UserRoles.Controllers
                 return RedirectToAction(nameof(ViewStudents));
             }
 
-            
+
             var gradeLevel = enrollment.GradeLevel;
             var sectionsWithCapacity = new List<int>();
-            var sectionCapacityData = new Dictionary<int, int>(); 
+            var sectionCapacityData = new Dictionary<int, int>();
 
-            
+
             for (int i = 1; i <= 8; i++)
             {
                 var studentsInSection = await _context.Enrollments
@@ -561,14 +607,14 @@ namespace UserRoles.Controllers
 
                 sectionCapacityData[i] = studentsInSection;
 
-                if (studentsInSection < 40) 
+                if (studentsInSection < 40)
                 {
                     sectionsWithCapacity.Add(i);
                 }
             }
 
             ViewBag.AvailableSections = sectionsWithCapacity;
-            ViewBag.SectionCapacity = sectionCapacityData; 
+            ViewBag.SectionCapacity = sectionCapacityData;
             ViewBag.GradeLevel = gradeLevel;
 
             return View(enrollment);
@@ -584,7 +630,7 @@ namespace UserRoles.Controllers
                 return RedirectToAction(nameof(ViewStudents));
             }
 
-            
+
             var studentsInSection = await _context.Enrollments
                 .CountAsync(e => e.GradeLevel == enrollment.GradeLevel &&
                                e.Section == newSection &&
@@ -604,6 +650,24 @@ namespace UserRoles.Controllers
             TempData["Success"] = $"Student {enrollment.StudentName} has been reassigned from Section {oldSection} to Section {newSection}.";
 
             return RedirectToAction(nameof(ViewSectionStudents), new { gradeLevel = enrollment.GradeLevel, section = newSection });
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAvailableSections(string gradeLevel)
+        {
+            var takenSections = await _context.Users
+                .Where(u => u.Role == "professor" &&
+                           u.AssignedGradeLevel == gradeLevel &&
+                           u.AssignedSection.HasValue)
+                .Select(u => new
+                {
+                    section = u.AssignedSection.Value,
+                    professorName = u.FullName
+                })
+                .ToListAsync();
+
+            return Json(new { takenSections });
         }
     }
 }

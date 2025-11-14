@@ -518,7 +518,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="professor-details">
                         <div class="detail-row">
                             <span class="detail-label">Assigned Grade Level</span>
@@ -528,6 +527,13 @@
                             <span class="detail-label">Assigned Section</span>
                             <span class="detail-value">
                                 @(professor.AssignedSection.HasValue ? $"Section {professor.AssignedSection}" : "Not assigned")
+                            </span>
+                        </div>
+                        <!-- NEW: Display Room -->
+                        <div class="detail-row">
+                            <span class="detail-label">Assigned Room</span>
+                            <span class="detail-value" style="color: var(--warning);">
+                                <i class="fas fa-door-open"></i> @(professor.AssignedRoom ?? "No room assigned")
                             </span>
                         </div>
                         <div class="detail-row">

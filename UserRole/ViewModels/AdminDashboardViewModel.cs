@@ -112,6 +112,7 @@ namespace UserRoles.ViewModels
         public string ProfessorName { get; set; } = string.Empty;
         public string GradeLevel { get; set; } = string.Empty;
         public int Section { get; set; }
+        public string AssignedRoom { get; set; } = string.Empty;
         public List<Enrollment> Students { get; set; } = new();
         public ClassScheduleViewModel ClassSchedule { get; set; } = new();
         public int TotalStudents { get; set; }
